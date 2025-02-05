@@ -1,0 +1,10 @@
+packages:
+  - 'client'
+  - 'common'
+  - 'server'
+  - 'web'
+
+catalog:
+  '@types/node': ^16.18.126
+  '@citizenfx/client': 2.0.12767-1
+  '@citizenfx/server': 2.0.12767-1

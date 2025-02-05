@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "private": true,
+  "name": "client",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build && rollup --config rollup.config.ts --configPlugin typescript"
+  },
+  "dependencies": {
+    "@internal/common": "workspace:*"
+  },
+  "devDependencies": {
+    "@citizenfx/client": "catalog:",
+    "@types/node": "catalog:"
+  }
+}

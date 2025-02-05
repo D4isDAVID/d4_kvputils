@@ -1,0 +1,19 @@
+# Node.js packages
+node_modules/
+
+# Output files
+.turbo/
+dist/
+
+# FiveM yarn
+.yarn.installed
+
+# IDE-related
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# OS-related
+.DS_Store
+Thumbs.db

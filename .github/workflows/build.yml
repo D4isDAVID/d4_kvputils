@@ -1,0 +1,94 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            client
+            common
+            server
+            web
+            CHANGELOG.md
+            LICENSE
+            README.md
+            fxmanifest.lua
+            package.json
+            pnpm-lock.yaml
+            pnpm-workspace.yaml
+            tsconfig.base.json
+            tsconfig.bundler.json
+            turbo.json
+          sparse-checkout-cone-mode: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+      - name: Post-build
+        shell: bash
+        run: |
+          rm -rf "./.git"
+          rm -rf "./.turbo"
+          rm -rf "./client"
+          rm -rf "./common"
+          rm -rf "./node_modules"
+          rm -rf "./server"
+          rm -rf "./web"
+          rm -rf "./package.json"
+          rm -rf "./pnpm-lock.yaml"
+          rm -rf "./pnpm-workspace.yaml"
+          rm -rf "./tsconfig.base.json"
+          rm -rf "./tsconfig.bundler.json"
+          rm -rf "./turbo.json"
+
+          mkdir ../d4_kvputils-out
+          mv -v * ../d4_kvputils-out/
+          mv -v ../d4_kvputils-out/ ./d4_kvputils/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: d4_kvputils
+          path: |
+            ./*
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+
+      - name: Archive
+        shell: bash
+        run: |
+          zip -r "d4_kvputils.zip" "./d4_kvputils/d4_kvputils"
+
+      - name: Draft release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          files: |
+            ./*.zip
