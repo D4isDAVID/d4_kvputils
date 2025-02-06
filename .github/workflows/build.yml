@@ -15,6 +15,7 @@ jobs:
             common
             server
             web
+            .node-version
             CHANGELOG.md
             LICENSE
             README.md
@@ -49,6 +50,7 @@ jobs:
           rm -rf "./node_modules"
           rm -rf "./server"
           rm -rf "./web"
+          rm -rf "./.node-version"
           rm -rf "./package.json"
           rm -rf "./pnpm-lock.yaml"
           rm -rf "./pnpm-workspace.yaml"
