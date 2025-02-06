@@ -23,6 +23,7 @@ jobs:
             package.json
             pnpm-lock.yaml
             pnpm-workspace.yaml
+            postbuild.js
             tsconfig.base.json
             tsconfig.bundler.json
             turbo.json
@@ -54,6 +55,7 @@ jobs:
           rm -rf "./package.json"
           rm -rf "./pnpm-lock.yaml"
           rm -rf "./pnpm-workspace.yaml"
+          rm -rf "./postbuild.js"
           rm -rf "./tsconfig.base.json"
           rm -rf "./tsconfig.bundler.json"
           rm -rf "./turbo.json"
